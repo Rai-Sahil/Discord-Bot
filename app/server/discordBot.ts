@@ -1,5 +1,7 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, Client, Message, TextChannel } from 'discord.js';
 
+require('dotenv').config();
+
 export class DiscordBot {
     private client: Client;
 
@@ -16,7 +18,7 @@ export class DiscordBot {
         });
 
         this.client.on('messageCreate', async (message: Message) => {
-            if (message.author.bot || !message.content.startsWith('!')) return;
+            if (message.author.bot) return;
 
             const generateIssue = new ButtonBuilder()
                 .setLabel('Generate Issue')
@@ -24,11 +26,11 @@ export class DiscordBot {
                 .setCustomId('generate_issue');
             const buttonRow = new ActionRowBuilder().addComponents(generateIssue);
             const channel = message.channel as TextChannel;
-            
-            channel.send('Click the botton to genreate Issue').then(sendMessage => {
-                sendMessage.reply({ content: 'Click the button to generate Issue', components: [buttonRow] })
-                sendMessage.react('🆘');
-            });
+
+            channel.send({ content: 'Click the button to generate Issue', components: [buttonRow] })
+                .then(sendMessage => {
+                    sendMessage.react('🆘')
+                });
         });
 
         this.client.on('interactionCreate', async interaction => {
@@ -44,6 +46,6 @@ export class DiscordBot {
             }
         });
 
-        this.client.login('MTIxMTM4NjI4NjU3Mzg3OTI5Nw.G9MRsT.EQsTSA8xgTXMXUEe93_nt19peT07k_8Hx1p6cg')
+        this.client.login(process.env.DISCORD_BOT_TOKEN);
     }
 }
