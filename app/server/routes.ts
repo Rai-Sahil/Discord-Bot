@@ -1,5 +1,4 @@
 import { Request, Response, Application } from 'express';
-import say from 'say';
 
 export class Routes {
     public routes(app: Application): void {
@@ -9,17 +8,5 @@ export class Routes {
                     message: 'GET request successful!'
                 })
             })
-
-        app.route('/say')
-            .get((req: Request, res: Response) => {
-                const name = "Sahil";
-
-                say.speak(name, undefined, 1.0, (err) => {
-                    if (err) {
-                        return console.error(err);
-                    }
-                    console.log('Text has been spoken.');
-                })
-            });
     }
 }
