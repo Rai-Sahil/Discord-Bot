@@ -21,8 +21,8 @@ export class DiscordBot {
         });
 
         this.client.on('messageCreate', async (message: Message) => {
-            // TODO: Add a check to see if user is havng issue.
-            if (message.author.bot) return;
+            if (message.author.bot || 
+                !(await this.gptService.getGPTResponse(message.toString()))) return;
 
             const generateIssue = new ButtonBuilder()
                 .setLabel('Generate Issue')
