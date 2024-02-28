@@ -1,15 +1,18 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, Client, Message, TextChannel } from 'discord.js';
+import GPTService from './GPTService';
 
 require('dotenv').config();
 
 export class DiscordBot {
     private client: Client;
+    private gptService: GPTService;
 
     constructor(){
         this.client = new Client({
             intents: ['Guilds', 'GuildMessages', 'GuildMembers', 'MessageContent']
         });
         this.setupBot();
+        this.gptService = new GPTService();
     }
 
     private setupBot(): void {
@@ -18,6 +21,7 @@ export class DiscordBot {
         });
 
         this.client.on('messageCreate', async (message: Message) => {
+            // TODO: Add a check to see if user is havng issue.
             if (message.author.bot) return;
 
             const generateIssue = new ButtonBuilder()
